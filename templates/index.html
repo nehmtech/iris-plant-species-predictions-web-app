@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <title>Iris Species Predictions</title>
+  </head>
+
+  <body>
+   
+
+    <div class="container max-auto px-4 py-8">
+      <div
+        
+      >
+        <h1 class="mt-4">Iris Flower Precies Predictor</h1>
+        <form id="predictionform" class="space-y-4">
+
+            <div>
+                <label class="block text-gray-700">Sepal Length:</label>
+                <input type="number" name="sepal_length" step="0.1" required
+                class="form-control mb-2 ">
+            </div>
+            <div>
+                <label class="block text-gray-700">Sepal width:</label>
+                <input type="number" name="sepal_width" step="0.1" required
+                class="form-control mb-2 ">
+            </div>
+            <div>
+                <label class="block text-gray-700">Petal Length:</label>
+                <input type="number" name="petal_length" step="0.1" required
+                class="form-control mb-2 ">
+            </div>
+            <div>
+                <label class="block text-gray-700">Petal Width:</label>
+                <input type="number" name="petal_width" step="0.1" required
+                class=" form-control mb-2">
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3">Predict Species</button>
+            <hr>
+
+        </form>
+
+        <div id="result">
+            <h3>Predicted Species: </h3> <span id="prediction"></span>
+            <p>
+                Confidence: <span id="probability"></span>
+            </p>
+
+            </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionform').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+
+            try{
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                })
+
+                const data =  await response.json();
+
+                if (data.error){
+                    alert('Error: ' + data.error);
+                    return;
+                }
+
+                document.getElementById('prediction').textContent = data.prediction;
+                document.getElementById('probability').textContent = data.probability;
+                document.getElementById('result').classList.remove('hidden') 
+
+            } catch (error){
+                alert('Error: ' + error.message);
+            }
+        })
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
