@@ -1,32 +1,33 @@
 from flask import Flask, render_template, request, jsonify
-import pickle
 import numpy as np
 import pandas as pd
 
-
+import pickle
 from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+
 from sklearn.ensemble import RandomForestClassifier
+
 
 app = Flask(__name__)
 
-# Load the model
-with open('iris_model.pkl', 'rb') as model_file:
-    model = pickle.load(model_file)
+with open('model/iris_model.pkl', 'rb') as model_file:
+    model = pickle.load(model_file )
     
-# Load the model
-with open('scaler.pkl', 'rb') as scaler_file:
-    scaler = pickle.load(scaler_file)
+# Save the model
+with open('model/scaler.pkl', 'rb') as scaler_file:
+    scaler = pickle.load(scaler_file )
     
-    
+ 
 @app.route('/')
 def home():
     return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:       
+    try:
         
-        # Get values 
         features = [
             float(request.form['sepal_length']),
             float(request.form['sepal_width']),
@@ -34,15 +35,13 @@ def predict():
             float(request.form['petal_width']),
         ]
         
-        # Transform features
         features_scaled = scaler.transform([features])
         
-        # Make prediction
         prediction = model.predict(features_scaled)
         
-        # Get prediction probability        
         proba = model.predict_proba(features_scaled)
-        max_proba = f"{round(np.max(proba) * 100, 2)}%"
+        
+        max_proba = f'{round(np.max(proba) * 100, 2)}%'
         
         
         return jsonify({
@@ -53,7 +52,8 @@ def predict():
     except Exception as e:
         return jsonify({'error': str(e)})
     
-
-if __name__== '__main__':
-    app.run(debug=True)
     
+if __name__ == '__main__':
+    app.run(debug=True)
+        
+

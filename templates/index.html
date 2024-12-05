@@ -1,68 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    />
-    <title>Iris Species Prediction</title>
-  </head>
 
-  <body>
-   
-
-    <div class="container max-auto px-4 py-8">
-      <div
-        
-      >
-        <h1 class="mt-4">Iris Flower Precies Predictor</h1>
-        <form id="predictionform" class="space-y-4">
-
-            <div>
-                <label class="block text-gray-700">Sepal Length:</label>
-                <input type="number" name="sepal_length" step="0.1" required
-                class="form-control mb-2 ">
-            </div>
-            <div>
-                <label class="block text-gray-700">Sepal width:</label>
-                <input type="number" name="sepal_width" step="0.1" required
-                class="form-control mb-2 ">
-            </div>
-            <div>
-                <label class="block text-gray-700">Petal Length:</label>
-                <input type="number" name="petal_length" step="0.1" required
-                class="form-control mb-2 ">
-            </div>
-            <div>
-                <label class="block text-gray-700">Petal Width:</label>
-                <input type="number" name="petal_width" step="0.1" required
-                class=" form-control mb-2">
-            </div>
-
-            <button type="submit" class="btn btn-primary mb-3">Predict Species</button>
-            <hr>
-
-        </form>
-
-        <div id="result">
-            <h3>Predicted Species: </h3> <span id="prediction"></span>
-            <p>
-                Confidence: <span id="probability"></span>
-            </p>
-
-            </div>
-
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iris Plant Species Prediction</title>
+</head>
+<body>
+    <nav class="navbar ps-4 pe-4 navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Home</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+              </li>
+             
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
         </div>
+      </nav>
 
 
-      </div>
+    <h2 class="mt-4 text-center text-success">Iris Plant Species Prediction </h2>
+    <form class="ms-5 me-5" id="predictionform">
+        <div>
+            <label >Sepal Length:</label>
+            <input class="form-control" type="number" name="sepal_length" step="0.1" required>
+        </div>
+        <div>
+            <label >Sepal Width:</label>
+            <input class="form-control"  type="number" name="sepal_width" step="0.1" required>
+        </div>
+        <div>
+            <label >Petal Length:</label>
+            <input class="form-control"  type="number" name="petal_length" step="0.1" required>
+        </div>
+        <div>
+            <label >Petal Length:</label>
+            <input class="form-control"  type="number" name="petal_width" step="0.1" required>
+        </div>
+        <button class="btn btn-primary mt-4 mb-4" type="submit">Predict the Species</button>
+
+    </form>
+
+    <div class="ms-5 me-5 bg-body-secondary rounded p-4" id="result">
+        <h4>Predicted Species: <span class="text-success" id="prediction"></span></h4>
+        <h4>Confidence: <span class="text-success" id="probability"></span></h4>
     </div>
-
     <script>
         document.getElementById('predictionform').addEventListener('submit', async (e) => {
-            e.preventDefault();
+            e.preventDefault()
 
             const formData = new FormData(e.target);
 
@@ -72,23 +71,21 @@
                     body: formData
                 })
 
-                const data =  await response.json();
+                const data = await response.json()
 
                 if (data.error){
                     alert('Error: ' + data.error);
                     return;
                 }
 
-                document.getElementById('prediction').textContent = data.prediction;
-                document.getElementById('probability').textContent = data.probability;
-                document.getElementById('result').classList.remove('hidden') 
-
+                document.getElementById('prediction').textContent = data.prediction
+                document.getElementById('probability').textContent = data.probability
+                document.getElementById('probability').classList.remove('hidden')
             } catch (error){
-                alert('Error: ' + error.message);
+                alert('Error: ' + error.message)
             }
         })
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+</body>
 </html>
